@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SpeedType - Typing Test</title>
+    <link rel="icon" type="image/png" href="./steam.png.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f9ff 0%, #e6f0ff 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+            width: 100%;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: linear-gradient(to right, #2c6fb7, #3a8fe8);
+            color: white;
+            box-shadow: 0 5px 15px rgba(44, 111, 183, 0.2);
+        }
+
+        header h1 {
+            font-size: clamp(1.5rem, 5vw, 2.8rem);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Page Management */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(44, 111, 183, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .card-header {
+            background: linear-gradient(to right, #3a8fe8, #5aa1f0);
+            color: white;
+            padding: 15px 20px;
+        }
+
+        .card-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2c6fb7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #d1e3ff;
+            border-radius: 8px;
+            font-size: clamp(0.95rem, 3vw, 1rem);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #3a8fe8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(58, 143, 232, 0.2);
+        }
+
+        /* Button Styles */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            min-height: 48px;
+            min-width: 48px;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background-color: #3a8fe8;
+            color: white;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:active {
+            background-color: #2c6fb7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 111, 183, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #e6f0ff;
+            color: #2c6fb7;
+        }
+
+        .btn-secondary:hover,
+        .btn-secondary:active {
+            background-color: #d1e3ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(209, 227, 255, 0.8);
+        }
+
+        .btn-danger {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        .btn-danger:hover,
+        .btn-danger:active {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Home Page Styles */
+        .intro-text {
+            font-size: clamp(0.95rem, 3vw, 1.1rem);
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .stats-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            background-color: #e6f0ff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border-top: 4px solid #3a8fe8;
+        }
+
+        .stat-box i {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: #3a8fe8;
+            margin-bottom: 10px;
+        }
+
+        .stat-box h3 {
+            color: #2c6fb7;
+            margin-bottom: 6px;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+        }
+
+        .stat-box p {
+            color: #666;
+            font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+        }
+
+        .features {
+            margin-top: 30px;
+        }
+
+        .features h2 {
+            text-align: center;
+            color: #2c6fb7;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(44, 111, 183, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-3px);
+        }
+
+        .feature i {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            color: #3a8fe8;
+            margin-bottom: 12px;
+        }
+
+        .feature h3 {
+            color: #2c6fb7;
+            margin-bottom: 8px;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+        }
+
+        .feature p {
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            color: #666;
+        }
+
+        /* Typing Test Page Styles */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(44, 111, 183, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            font-weight: 700;
+            color: #2c6fb7;
+        }
+
+        .stat-value.warning {
+            color: #ff6b6b;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .typing-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(44, 111, 183, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .test-info {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e6f0ff;
+        }
+
+        .test-info h2 {
+            color: #2c6fb7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
+        }
+
+        .instructions {
+            background-color: #e6f0ff;
+            padding: 12px;
+            border-radius: 8px;
+            color: #2c6fb7;
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+        }
+
+        .instructions i {
+            margin-right: 6px;
+        }
+
+        .text-display {
+            background-color: #f8fbff;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 120px;
+            margin-bottom: 20px;
+            border: 2px solid #e6f0ff;
+            line-height: 1.6;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            overflow-wrap: break-word;
+            user-select: none;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .word {
+            display: inline-block;
+            margin-right: 2px;
+            white-space: nowrap;
+        }
+
+        .char {
+            display: inline-block;
+            transition: all 0.1s ease;
+            padding: 1px;
+            border-radius: 2px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .char.correct {
+            color: #27ae60;
+            background-color: rgba(39, 174, 96, 0.1);
+        }
+
+        .char.incorrect {
+            color: #e74c3c;
+            background-color: rgba(231, 76, 60, 0.1);
+            text-decoration: line-through;
+        }
+
+        .char.current {
+            background-color: #a5d1ff;
+            color: #2c6fb7;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                background-color: #a5d1ff;
+            }
+
+            50% {
+                background-color: #d1e3ff;
+            }
+        }
+
+        .word-correct {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-radius: 3px;
+        }
+
+        .word-incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-radius: 3px;
+        }
+
+        .input-area {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-area textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #d1e3ff;
+            border-radius: 10px;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            resize: none;
+            transition: all 0.3s ease;
+            line-height: 1.5;
+            -webkit-user-select: text;
+            user-select: text;
+            font-family: 'Courier New', monospace;
+        }
+
+        .input-area textarea:focus {
+            border-color: #3a8fe8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(58, 143, 232, 0.2);
+        }
+
+        .input-hint {
+            margin-top: 8px;
+            color: #666;
+            font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .key-hint {
+            background-color: #e6f0ff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #2c6fb7;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .typing-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .results-panel {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(44, 111, 183, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .results-panel h2 {
+            color: #2c6fb7;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+        }
+
+        .final-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .final-stat {
+            background-color: #e6f0ff;
+            border-radius: 10px;
+            padding: 20px;
+            border-top: 4px solid #3a8fe8;
+        }
+
+        .final-stat h3 {
+            color: #666;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+            margin-bottom: 8px;
+        }
+
+        .final-stat p {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            font-weight: 700;
+            color: #2c6fb7;
+        }
+
+        /* Admin Panel Styles */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .admin-stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(44, 111, 183, 0.1);
+            border-top: 4px solid #3a8fe8;
+        }
+
+        .admin-stat-card i {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: #3a8fe8;
+            margin-bottom: 10px;
+        }
+
+        .admin-stat-card h3 {
+            color: #666;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+            margin-bottom: 8px;
+        }
+
+        .admin-stat-card p {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 700;
+            color: #2c6fb7;
+        }
+
+        .dashboard-header {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e6f0ff;
+        }
+
+        .dashboard-header h2 {
+            color: #2c6fb7;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            text-align: center;
+        }
+
+        .controls-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .filter-group {
+            width: 100%;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2c6fb7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #d1e3ff;
+            border-radius: 6px;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+
+        .results-table-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(44, 111, 183, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .results-table-container h3 {
+            color: #2c6fb7;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -20px;
+            padding: 0 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        thead {
+            background-color: #e6f0ff;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            color: #2c6fb7;
+            font-weight: 600;
+            border-bottom: 2px solid #d1e3ff;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f7ff;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        }
+
+        tr:hover {
+            background-color: #f8fbff;
+        }
+
+        .no-results {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: #999;
+            text-align: center;
+        }
+
+        .no-results i {
+            font-size: clamp(2rem, 6vw, 3rem);
+            margin-bottom: 15px;
+            color: #d1e3ff;
+        }
+
+        .no-results p {
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+
+        .login-hint {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #e6f0ff;
+            border-radius: 6px;
+            color: #2c6fb7;
+            text-align: center;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+        }
+
+        /* Navigation */
+        .nav-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(44, 111, 183, 0.1);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #2c6fb7;
+            font-weight: 700;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            text-decoration: none;
+            min-height: 44px;
+        }
+
+        .nav-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .nav-link {
+            padding: 12px;
+            background-color: #e6f0ff;
+            color: #2c6fb7;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-height: 44px;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        }
+
+        .nav-link:hover,
+        .nav-link:active {
+            background-color: #3a8fe8;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background-color: #3a8fe8;
+            color: white;
+        }
+
+        .nav-text {
+            display: block;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            margin-top: 20px;
+            border-top: 2px solid #e6f0ff;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        }
+
+        /* ========== MOBILE OPTIMIZATIONS ========== */
+        /* Prevent textarea zoom on iOS */
+        @media screen and (max-width: 768px) {
+
+            textarea,
+            input[type="text"],
+            input[type="password"],
+            select {
+                font-size: 16px !important;
+            }
+
+            /* Hide complex keyboard hints on mobile */
+            .input-hint .key-hint:not(.mobile-visible) {
+                display: none;
+            }
+
+            .mobile-hint {
+                display: inline-block !important;
+            }
+
+            /* Improve touch targets */
+            .btn,
+            .nav-link {
+                touch-action: manipulation;
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 20px;
+            }
+
+            .stats-panel {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .final-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .nav-links {
+                grid-template-columns: repeat(3, auto);
+                gap: 15px;
+            }
+
+            .nav-link {
+                flex-direction: row;
+                padding: 12px 20px;
+            }
+        }
+
+        /* Desktop adjustments */
+        @media (min-width: 1025px) {
+            .stats-panel {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .final-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .nav-bar {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                grid-template-columns: repeat(3, auto);
+            }
+
+            .nav-link {
+                flex-direction: row;
+                padding: 12px 24px;
+            }
+
+            .text-display {
+                min-height: 150px;
+                max-height: 250px;
+            }
+
+            .input-area textarea {
+                height: 150px;
+            }
+        }
+
+        /* Very small devices */
+        @media (max-width: 320px) {
+            .container {
+                padding: 10px;
+            }
+
+            .stats-panel,
+            .final-stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .stat-item,
+            .final-stat {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+            }
+
+            .stat-label,
+            .final-stat h3 {
+                margin-bottom: 0;
+                font-size: 0.9rem;
+            }
+
+            .stat-value,
+            .final-stat p {
+                font-size: 1.4rem;
+            }
+
+            .nav-links {
+                grid-template-columns: 1fr;
+            }
+
+            .text-display {
+                min-height: 100px;
+                padding: 15px;
+                font-size: 0.95rem;
+            }
+
+            .input-area textarea {
+                height: 100px;
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Landscape mode */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .typing-container {
+                padding: 15px;
+            }
+
+            .text-display {
+                min-height: 80px;
+                max-height: 120px;
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .input-area textarea {
+                height: 80px;
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .stats-panel {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .typing-controls {
+                gap: 8px;
+            }
+        }
+
+        /* High DPI screens */
+        @media (-webkit-min-device-pixel-ratio: 2),
+        (min-resolution: 192dpi) {
+
+            .text-display,
+            .input-area textarea,
+            .stat-value,
+            .final-stat p,
+            .admin-stat-card p {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+
+            .nav-bar,
+            .typing-controls,
+            .input-area,
+            .input-hint,
+            .btn,
+            footer {
+                display: none !important;
+            }
+
+            .typing-container,
+            .results-panel,
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+
+            .text-display {
+                min-height: auto;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation Bar -->
+        <div class="nav-bar">
+            <a href="#" class="nav-logo" onclick="showPage('home')">
+                <i class="fas fa-keyboard"></i>
+                <span>SpeedType</span>
+            </a>
+            <div class="nav-links">
+                <a href="#" class="nav-link" id="nav-home" onclick="showPage('home')">
+                    <i class="fas fa-home"></i> <span class="nav-text">Home</span>
+                </a>
+                <a href="#" class="nav-link" id="nav-typing" onclick="showPage('typing')">
+                    <i class="fas fa-keyboard"></i> <span class="nav-text">Typing Test</span>
+                </a>
+                <a href="#" class="nav-link" id="nav-admin" onclick="showPage('admin')">
+                    <i class="fas fa-user-shield"></i> <span class="nav-text">Admin</span>
+                </a>
+            </div>
+        </div>
+
+        <header>
+            <h1><i class="fas fa-keyboard"></i> Free Typing Test With IAK STEAM</h1>
+            <p class="subtitle">Test your typing speed and accuracy</p>
+        </header>
+
+        <!-- Home Page -->
+        <div id="home-page" class="page active">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-home"></i> Welcome to SpeedType</h2>
+                </div>
+                <div class="card-body">
+                    <p class="intro-text">Take a typing test to measure your words per minute (WPM) and accuracy.
+                        Challenge yourself and track your progress over time!</p>
+
+                    <div class="stats-preview">
+                        <div class="stat-box">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h3>WPM</h3>
+                            <p>Words Per Minute</p>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-bullseye"></i>
+                            <h3>Accuracy</h3>
+                            <p>Typing Precision</p>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-history"></i>
+                            <h3>60 Seconds</h3>
+                            <p>Test Duration</p>
+                        </div>
+                    </div>
+
+                    <form id="user-form">
+                        <div class="form-group">
+                            <label for="username"><i class="fas fa-user"></i> Enter Your Name</label>
+                            <input type="text" id="username" placeholder="Type your name here..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="test-mode"><i class="fas fa-cogs"></i> Test Mode</label>
+                            <select id="test-mode">
+                                <option value="60">60 Seconds (Standard)</option>
+                                <option value="30">30 Seconds (Quick)</option>
+                                <option value="120">120 Seconds (Extended)</option>
+                            </select>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Start Typing Test
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="features">
+                <h2><i class="fas fa-star"></i> Features</h2>
+                <div class="feature-list">
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Real-time Stats</h3>
+                        <p>Watch your WPM and accuracy update as you type</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-history"></i>
+                        <h3>Track Progress</h3>
+                        <p>Save all your test results and monitor improvement</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-font"></i>
+                        <h3>Random Texts</h3>
+                        <p>Get a new paragraph each time for fresh challenges</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typing Test Page -->
+        <div id="typing-page" class="page">
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">Time Left</div>
+                    <div class="stat-value" id="timer">60s</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">WPM</div>
+                    <div class="stat-value" id="wpm">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Accuracy</div>
+                    <div class="stat-value" id="accuracy">100%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+            </div>
+
+            <div class="typing-container">
+                <div class="test-info">
+                    <h2><i class="fas fa-user"></i> <span id="current-user">Guest</span></h2>
+                    <div class="instructions">
+                        <p><i class="fas fa-info-circle"></i> Type the text below. All words are in lowercase. Press
+                            SPACE after each word.</p>
+                    </div>
+                </div>
+
+                <div class="text-display" id="text-display">
+                    <!-- Text will be inserted by JavaScript -->
+                </div>
+
+                <div class="input-area">
+                    <textarea id="typing-input" placeholder="Start typing here... (all lowercase)" autocapitalize="off"
+                        autocorrect="off" spellcheck="false"></textarea>
+                    <div class="input-hint">
+                        <i class="fas fa-lightbulb"></i>
+                        <span class="mobile-hint" style="display: none;">Type & press SPACE</span>
+                        <span class="key-hint mobile-visible">SPACE</span> after word
+                    </div>
+                </div>
+
+                <div class="typing-controls">
+                    <button id="restart-btn" class="btn btn-primary">
+                        <i class="fas fa-redo"></i> Restart
+                    </button>
+                    <button id="new-text-btn" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> New Text
+                    </button>
+                    <button id="home-btn" class="btn btn-secondary">
+                        <i class="fas fa-home"></i> Home
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-panel" id="results-panel" style="display: none;">
+                <h2><i class="fas fa-trophy"></i> Test Completed!</h2>
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <h3>Final WPM</h3>
+                        <p id="final-wpm">0</p>
+                    </div>
+                    <div class="final-stat">
+                        <h3>Accuracy</h3>
+                        <p id="final-accuracy">100%</p>
+                    </div>
+                    <div class="final-stat">
+                        <h3>Score</h3>
+                        <p id="final-score">0</p>
+                    </div>
+                    <div class="final-stat">
+                        <h3>Words Typed</h3>
+                        <p id="final-words">0</p>
+                    </div>
+                </div>
+                <button id="try-again-btn" class="btn btn-primary">
+                    <i class="fas fa-play-circle"></i> Try Again
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin-page" class="page">
+            <div id="login-panel" class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
+                </div>
+                <div class="card-body">
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="admin-username"><i class="fas fa-user"></i> Username</label>
+                            <input type="text" id="admin-username" placeholder="Enter admin username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="admin-password"><i class="fas fa-lock"></i> Password</label>
+                            <input type="password" id="admin-password" placeholder="Enter admin password" required>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                        </div>
+
+                        <div class="login-hint">
+                            <p><i class="fas fa-info-circle"></i> Default credentials: admin / 1234</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="dashboard" class="dashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+                    <button id="logout-btn" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+
+                <div class="admin-stats">
+                    <div class="admin-stat-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Total Users</h3>
+                        <p id="total-users">0</p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <i class="fas fa-history"></i>
+                        <h3>Total Tests</h3>
+                        <p id="total-tests">0</p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Avg. WPM</h3>
+                        <p id="avg-wpm">0</p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <i class="fas fa-bullseye"></i>
+                        <h3>Avg. Accuracy</h3>
+                        <p id="avg-accuracy">0%</p>
+                    </div>
+                </div>
+
+                <div class="card controls-panel">
+                    <div class="card-header">
+                        <h3><i class="fas fa-filter"></i> Filter & Sort Results</h3>
+                    </div>
+                    <div class="controls-body">
+                        <div class="filter-group">
+                            <label for="sort-by"><i class="fas fa-sort"></i> Sort By:</label>
+                            <select id="sort-by">
+                                <option value="date">Date (Newest First)</option>
+                                <option value="date-asc">Date (Oldest First)</option>
+                                <option value="name">Name (A-Z)</option>
+                                <option value="name-desc">Name (Z-A)</option>
+                                <option value="score">Score (High to Low)</option>
+                                <option value="score-asc">Score (Low to High)</option>
+                                <option value="wpm">WPM (High to Low)</option>
+                                <option value="wpm-asc">WPM (Low to High)</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="filter-user"><i class="fas fa-user"></i> Filter by User:</label>
+                            <select id="filter-user">
+                                <option value="all">All Users</option>
+                                <!-- User options will be populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="search-name"><i class="fas fa-search"></i> Search by Name:</label>
+                            <input type="text" id="search-name" placeholder="Enter name to search...">
+                        </div>
+
+                        <button id="clear-data-btn" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> Clear All Data
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-table-container card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-list-alt"></i> All Test Results</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table id="results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Date & Time</th>
+                                        <th>Score</th>
+                                        <th>Accuracy</th>
+                                        <th>Words Typed</th>
+                                        <th>WPM</th>
+                                        <th>Test Duration</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Results will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="no-results" id="no-results">
+                            <i class="fas fa-inbox"></i>
+                            <p>No test results found. Complete some typing tests to see data here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>SpeedType Typing Test &copy; <span id="current-year"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Application State
+        const AppState = {
+            currentPage: 'home',
+            typingTest: null,
+            admin: null,
+            isMobile: false,
+            isLandscape: false
+        };
+
+        // Utility Functions
+        const Utils = {
+            generateRandomText() {
+                const texts = [
+                    "the quick brown fox jumps over the lazy dog this sentence contains all letters of the alphabet and is commonly used for typing practice",
+                    "programming is the process of creating a set of instructions that tell a computer how to perform a task programming can be done using many languages",
+                    "technology has transformed our lives in countless ways from how we communicate to how we work and entertain ourselves the digital age continues to evolve rapidly",
+                    "learning to type quickly and accurately is an essential skill in today's digital world practice regularly to improve your speed and reduce errors",
+                    "the future of artificial intelligence promises to revolutionize industries and daily life machine learning algorithms are becoming increasingly sophisticated",
+                    "reading books enhances knowledge improves focus and reduces stress it is a valuable habit that everyone should cultivate from a young age",
+                    "nature provides us with beautiful landscapes clean air and essential resources protecting the environment is crucial for future generations",
+                    "healthy eating and regular exercise are key components of a balanced lifestyle small daily habits can lead to significant long-term health benefits",
+                    "traveling expands our horizons exposes us to new cultures and creates lasting memories exploring different places teaches valuable life lessons",
+                    "music has the power to evoke emotions bring people together and provide comfort during difficult times it is a universal language understood by all"
+                ];
+
+                return texts[Math.floor(Math.random() * texts.length)];
+            },
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            },
+
+            getTestResults() {
+                try {
+                    return JSON.parse(localStorage.getItem('typingTestResults') || '[]');
+                } catch (error) {
+                    console.error('Error parsing test results:', error);
+                    return [];
+                }
+            },
+
+            saveTestResult(result) {
+                try {
+                    const results = this.getTestResults();
+                    results.push(result);
+                    localStorage.setItem('typingTestResults', JSON.stringify(results));
+                    return true;
+                } catch (error) {
+                    console.error('Error saving test result:', error);
+                    return false;
+                }
+            },
+
+            clearAllResults() {
+                localStorage.removeItem('typingTestResults');
+                return true;
+            },
+
+            getUniqueUsers() {
+                const results = this.getTestResults();
+                const users = [...new Set(results.map(result => result.name))];
+                return users.sort();
+            },
+
+            // Check device type
+            checkDeviceType() {
+                AppState.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+                AppState.isLandscape = window.innerWidth > window.innerHeight;
+
+                // Adjust UI for mobile
+                if (AppState.isMobile) {
+                    document.querySelectorAll('.mobile-hint').forEach(el => {
+                        el.style.display = 'inline-block';
+                    });
+
+                    // Simplify keyboard hints for mobile
+                    document.querySelectorAll('.key-hint:not(.mobile-visible)').forEach(el => {
+                        el.style.display = 'none';
+                    });
+
+                    // Adjust textarea for mobile keyboard
+                    const textarea = document.getElementById('typing-input');
+                    if (textarea) {
+                        textarea.setAttribute('autocapitalize', 'off');
+                        textarea.setAttribute('autocorrect', 'off');
+                        textarea.setAttribute('spellcheck', 'false');
+                    }
+                }
+
+                // Adjust for landscape mode
+                if (AppState.isLandscape && window.innerHeight < 600) {
+                    document.querySelector('.text-display').style.maxHeight = '100px';
+                    document.querySelector('#typing-input').style.height = '80px';
+                }
+            },
+
+            // Adjust text display for better readability
+            adjustTextDisplay() {
+                const textDisplay = document.querySelector('.text-display');
+                if (textDisplay) {
+                    const fontSize = window.innerWidth < 480 ? '0.95rem' :
+                        window.innerWidth < 768 ? '1.1rem' : '1.2rem';
+                    textDisplay.style.fontSize = fontSize;
+                }
+            }
+        };
+
+        // Page Management
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show selected page
+            const targetPage = document.getElementById(`${pageId}-page`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Set active nav link
+            const targetNav = document.getElementById(`nav-${pageId}`);
+            if (targetNav) {
+                targetNav.classList.add('active');
+            }
+
+            // Update app state
+            AppState.currentPage = pageId;
+
+            // Initialize page if needed
+            if (pageId === 'typing') {
+                initTypingTest();
+            } else if (pageId === 'admin') {
+                initAdminPanel();
+            }
+
+            // Scroll to top on mobile when changing pages
+            if (AppState.isMobile) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Typing Test Logic
+        class TypingTest {
+            constructor() {
+                this.timeLeft = 60;
+                this.timer = null;
+                this.isTestActive = false;
+                this.isTestCompleted = false;
+                this.startTime = null;
+                this.correctWords = 0;
+                this.totalTypedWords = 0;
+                this.correctCharacters = 0;
+                this.totalCharacters = 0;
+                this.currentText = '';
+                this.words = [];
+                this.username = 'Guest';
+                this.testDuration = 60;
+                this.currentWordIndex = 0;
+
+                // Bind methods
+                this.init = this.init.bind(this);
+                this.startTest = this.startTest.bind(this);
+                this.finishTest = this.finishTest.bind(this);
+                this.updateDisplay = this.updateDisplay.bind(this);
+                this.handleInput = this.handleInput.bind(this);
+            }
+
+            init() {
+                // Reset variables
+                clearInterval(this.timer);
+                this.timeLeft = this.testDuration;
+                this.isTestActive = false;
+                this.isTestCompleted = false;
+                this.correctWords = 0;
+                this.totalTypedWords = 0;
+                this.correctCharacters = 0;
+                this.totalCharacters = 0;
+                this.startTime = null;
+                this.currentWordIndex = 0;
+
+                // Get user info
+                this.username = localStorage.getItem('currentUser') || 'Guest';
+                this.testDuration = parseInt(localStorage.getItem('testDuration') || '60');
+                this.timeLeft = this.testDuration;
+
+                // Reset UI
+                document.getElementById('timer').textContent = `${this.timeLeft}s`;
+                document.getElementById('wpm').textContent = '0';
+                document.getElementById('accuracy').textContent = '100%';
+                document.getElementById('score').textContent = '0';
+                document.getElementById('current-user').textContent = this.username;
+
+                const typingInput = document.getElementById('typing-input');
+                typingInput.value = '';
+                typingInput.disabled = false;
+
+                // Focus on textarea with delay on mobile
+                if (AppState.isMobile) {
+                    setTimeout(() => {
+                        typingInput.focus();
+                        // Scroll textarea into view on mobile
+                        typingInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 500);
+                } else {
+                    typingInput.focus();
+                }
+
+                document.getElementById('results-panel').style.display = 'none';
+
+                // Get new random text
+                this.currentText = Utils.generateRandomText();
+                this.words = this.currentText.split(' ');
+
+                // Display text
+                this.displayText();
+
+                // Reset timer display
+                document.getElementById('timer').textContent = `${this.timeLeft}s`;
+                document.getElementById('timer').className = 'stat-value';
+
+                // Adjust text display for current screen size
+                Utils.adjustTextDisplay();
+            }
+
+            displayText() {
+                const textDisplay = document.getElementById('text-display');
+                textDisplay.innerHTML = '';
+
+                this.words.forEach((word, wordIndex) => {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.className = 'word';
+                    wordSpan.id = `word-${wordIndex}`;
+
+                    // Add each character as a span
+                    for (let i = 0; i < word.length; i++) {
+                        const charSpan = document.createElement('span');
+                        charSpan.className = 'char';
+                        charSpan.textContent = word[i];
+                        wordSpan.appendChild(charSpan);
+                    }
+
+                    // Add space after word
+                    if (wordIndex < this.words.length - 1) {
+                        const spaceSpan = document.createElement('span');
+                        spaceSpan.className = 'char space';
+                        spaceSpan.textContent = ' ';
+                        wordSpan.appendChild(spaceSpan);
+                    }
+
+                    textDisplay.appendChild(wordSpan);
+                });
+            }
+
+            startTest() {
+                if (this.isTestActive) return;
+
+                this.isTestActive = true;
+                this.startTime = new Date();
+
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    document.getElementById('timer').textContent = `${this.timeLeft}s`;
+
+                    if (this.timeLeft <= 10) {
+                        document.getElementById('timer').className = 'stat-value warning';
+                    }
+
+                    if (this.timeLeft <= 0) {
+                        this.finishTest();
+                    }
+                }, 1000);
+            }
+
+            finishTest() {
+                clearInterval(this.timer);
+                this.isTestActive = false;
+                this.isTestCompleted = true;
+                document.getElementById('typing-input').disabled = true;
+
+                // Calculate final stats
+                const totalTimeMinutes = (new Date() - this.startTime) / 60000;
+                const finalWPM = totalTimeMinutes > 0 ? Math.round(this.correctWords / totalTimeMinutes) : 0;
+                const finalAccuracy = this.totalCharacters > 0 ? Math.round((this.correctCharacters / this.totalCharacters) * 100) : 100;
+
+                // Save results
+                Utils.saveTestResult({
+                    name: this.username,
+                    date: new Date().toISOString(),
+                    score: this.correctWords,
+                    accuracy: finalAccuracy,
+                    totalWords: this.totalTypedWords,
+                    wpm: finalWPM,
+                    duration: this.testDuration
+                });
+
+                // Show results panel
+                document.getElementById('final-wpm').textContent = finalWPM;
+                document.getElementById('final-accuracy').textContent = `${finalAccuracy}%`;
+                document.getElementById('final-score').textContent = this.correctWords;
+                document.getElementById('final-words').textContent = this.totalTypedWords;
+                document.getElementById('results-panel').style.display = 'block';
+
+                // Scroll to results
+                setTimeout(() => {
+                    document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+            }
+
+            handleInput(event) {
+                const input = event.target.value;
+
+                // Force lowercase input
+                if (input !== input.toLowerCase()) {
+                    event.target.value = input.toLowerCase();
+                    return;
+                }
+
+                // Start test on first keypress
+                if (!this.isTestActive && !this.isTestCompleted && input.length > 0) {
+                    this.startTest();
+                }
+
+                this.updateDisplay(input);
+            }
+
+            updateDisplay(input) {
+                // Reset all characters to default
+                document.querySelectorAll('.char').forEach(char => {
+                    char.className = 'char';
+                });
+
+                // Split input into words
+                const inputWords = input.split(' ');
+                this.totalTypedWords = inputWords.filter(w => w !== '').length;
+
+                // Reset stats
+                let currentCorrectChars = 0;
+                this.correctWords = 0;
+
+                // Process each typed word
+                for (let wordIndex = 0; wordIndex < Math.min(inputWords.length, this.words.length); wordIndex++) {
+                    const typedWord = inputWords[wordIndex];
+                    const targetWord = this.words[wordIndex];
+                    const wordElement = document.getElementById(`word-${wordIndex}`);
+
+                    if (!wordElement) continue;
+
+                    // Process each character in the word
+                    const charElements = wordElement.querySelectorAll('.char:not(.space)');
+                    let wordCorrect = true;
+
+                    for (let i = 0; i < Math.max(typedWord.length, targetWord.length); i++) {
+                        const charElement = charElements[i];
+                        if (!charElement) continue;
+
+                        if (i < typedWord.length && i < targetWord.length) {
+                            if (typedWord[i] === targetWord[i]) {
+                                charElement.classList.add('correct');
+                                currentCorrectChars++;
+                            } else {
+                                charElement.classList.add('incorrect');
+                                wordCorrect = false;
+                            }
+                        } else if (i < typedWord.length) {
+                            charElement.classList.add('incorrect');
+                            wordCorrect = false;
+                        } else if (i < targetWord.length) {
+                            charElement.classList.add('incorrect');
+                            wordCorrect = false;
+                        }
+                    }
+
+                    // Check if word is complete and correct
+                    if (typedWord === targetWord) {
+                        this.correctWords++;
+                        wordElement.classList.add('word-correct');
+                        wordElement.classList.remove('word-incorrect');
+                    } else if (typedWord.length > 0) {
+                        wordElement.classList.add('word-incorrect');
+                        wordElement.classList.remove('word-correct');
+                    } else {
+                        wordElement.classList.remove('word-correct', 'word-incorrect');
+                    }
+                }
+
+                // Highlight current character
+                const currentWordIndex = Math.min(inputWords.length - 1, this.words.length - 1);
+                if (currentWordIndex >= 0) {
+                    const currentWordElement = document.getElementById(`word-${currentWordIndex}`);
+                    if (currentWordElement) {
+                        const charIndex = inputWords[currentWordIndex].length;
+                        const charElements = currentWordElement.querySelectorAll('.char:not(.space)');
+                        if (charElements[charIndex]) {
+                            charElements[charIndex].classList.add('current');
+                        }
+                    }
+                }
+
+                // Update character stats
+                this.correctCharacters = currentCorrectChars;
+                this.totalCharacters = input.length;
+
+                // Calculate real-time WPM
+                if (this.startTime && this.isTestActive) {
+                    const elapsedMinutes = (new Date() - this.startTime) / 60000;
+                    const wpm = elapsedMinutes > 0 ? Math.round(this.correctWords / elapsedMinutes) : 0;
+                    document.getElementById('wpm').textContent = wpm;
+                }
+
+                // Calculate accuracy
+                const accuracy = this.totalCharacters > 0 ? Math.round((this.correctCharacters / this.totalCharacters) * 100) : 100;
+                document.getElementById('accuracy').textContent = `${accuracy}%`;
+
+                // Update score
+                document.getElementById('score').textContent = this.correctWords;
+
+                // Check if test should finish
+                if (input.trim() === this.currentText || this.timeLeft <= 0) {
+                    this.finishTest();
+                }
+
+                // Update current word index
+                this.currentWordIndex = Math.min(inputWords.length - 1, this.words.length - 1);
+                if (this.currentWordIndex < 0) this.currentWordIndex = 0;
+            }
+
+            newText() {
+                this.currentText = Utils.generateRandomText();
+                this.words = this.currentText.split(' ');
+                this.currentWordIndex = 0;
+                this.displayText();
+
+                const typingInput = document.getElementById('typing-input');
+                typingInput.value = '';
+                this.updateDisplay('');
+
+                // Adjust text display
+                Utils.adjustTextDisplay();
+            }
+        }
+
+        function initTypingTest() {
+            if (!AppState.typingTest) {
+                AppState.typingTest = new TypingTest();
+            }
+
+            AppState.typingTest.init();
+
+            // Setup event listeners
+            const restartBtn = document.getElementById('restart-btn');
+            const newTextBtn = document.getElementById('new-text-btn');
+            const homeBtn = document.getElementById('home-btn');
+            const tryAgainBtn = document.getElementById('try-again-btn');
+
+            // Add event listeners to textarea
+            const typingInput = document.getElementById('typing-input');
+            typingInput.addEventListener('input', function (e) {
+                AppState.typingTest.handleInput(e);
+            });
+
+            typingInput.addEventListener('keydown', function (e) {
+                // Mobile shortcuts (no Ctrl needed)
+                if (AppState.isMobile) {
+                    if (e.key === 'r' || e.key === 'R') {
+                        e.preventDefault();
+                        AppState.typingTest.init();
+                    }
+                    if (e.key === 'n' || e.key === 'N') {
+                        e.preventDefault();
+                        AppState.typingTest.newText();
+                    }
+                } else {
+                    // Desktop shortcuts
+                    if (e.ctrlKey && e.key === 'r') {
+                        e.preventDefault();
+                        AppState.typingTest.init();
+                    }
+                    if (e.ctrlKey && e.key === 'n') {
+                        e.preventDefault();
+                        AppState.typingTest.newText();
+                    }
+                }
+
+                // Auto-format to lowercase
+                if (e.key.length === 1 && e.key >= 'A' && e.key <= 'Z' && !e.ctrlKey && !e.altKey) {
+                    e.preventDefault();
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    const value = this.value;
+                    this.value = value.substring(0, start) + e.key.toLowerCase() + value.substring(end);
+                    this.selectionStart = this.selectionEnd = start + 1;
+                    const inputEvent = new Event('input', { bubbles: true });
+                    this.dispatchEvent(inputEvent);
+                }
+            });
+
+            // Mobile touch improvements
+            if (AppState.isMobile) {
+                typingInput.addEventListener('touchstart', function () {
+                    this.focus();
+                });
+            }
+
+            // Button listeners
+            restartBtn.onclick = () => AppState.typingTest.init();
+            newTextBtn.onclick = () => AppState.typingTest.newText();
+            homeBtn.onclick = () => showPage('home');
+            tryAgainBtn.onclick = () => AppState.typingTest.init();
+        }
+
+        // Admin Panel Logic
+        function initAdminPanel() {
+            const loginPanel = document.getElementById('login-panel');
+            const dashboard = document.getElementById('dashboard');
+
+            // Check if already logged in
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+
+            // Login form
+            document.getElementById('login-form').onsubmit = function (e) {
+                e.preventDefault();
+                const username = document.getElementById('admin-username').value;
+                const password = document.getElementById('admin-password').value;
+
+                if (username === 'admin' && password === '1234') {
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    showDashboard();
+                } else {
+                    alert('Invalid username or password. Please try again.');
+                }
+            };
+
+            // Logout button
+            document.getElementById('logout-btn').onclick = function () {
+                localStorage.removeItem('adminLoggedIn');
+                showLogin();
+            };
+
+            // Clear data button
+            document.getElementById('clear-data-btn').onclick = function () {
+                if (confirm('Are you sure you want to delete ALL test results? This action cannot be undone.')) {
+                    Utils.clearAllResults();
+                    loadResults();
+                    updateStats();
+                }
+            };
+
+            // Filter events
+            document.getElementById('sort-by').onchange = loadResults;
+            document.getElementById('filter-user').onchange = loadResults;
+            document.getElementById('search-name').oninput = loadResults;
+
+            function showLogin() {
+                loginPanel.style.display = 'block';
+                dashboard.style.display = 'none';
+                document.getElementById('login-form').reset();
+            }
+
+            function showDashboard() {
+                loginPanel.style.display = 'none';
+                dashboard.style.display = 'block';
+                loadResults();
+                populateUserFilter();
+                updateStats();
+            }
+
+            function loadResults() {
+                const results = Utils.getTestResults();
+                let filteredResults = [...results];
+
+                // Filter by user
+                const selectedUser = document.getElementById('filter-user').value;
+                if (selectedUser !== 'all') {
+                    filteredResults = filteredResults.filter(result => result.name === selectedUser);
+                }
+
+                // Filter by search name
+                const searchTerm = document.getElementById('search-name').value.toLowerCase().trim();
+                if (searchTerm) {
+                    filteredResults = filteredResults.filter(result =>
+                        result.name.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                // Sort results
+                const sortBy = document.getElementById('sort-by').value;
+                filteredResults.sort((a, b) => {
+                    switch (sortBy) {
+                        case 'date': return new Date(b.date) - new Date(a.date);
+                        case 'date-asc': return new Date(a.date) - new Date(b.date);
+                        case 'name': return a.name.localeCompare(b.name);
+                        case 'name-desc': return b.name.localeCompare(a.name);
+                        case 'score': return b.score - a.score;
+                        case 'score-asc': return a.score - b.score;
+                        case 'wpm': return b.wpm - a.wpm;
+                        case 'wpm-asc': return a.wpm - b.wpm;
+                        default: return new Date(b.date) - new Date(a.date);
+                    }
+                });
+
+                // Clear table
+                const tableBody = document.querySelector('#results-table tbody');
+                tableBody.innerHTML = '';
+
+                // Show/hide no results message
+                const noResultsElement = document.getElementById('no-results');
+                if (filteredResults.length === 0) {
+                    noResultsElement.style.display = 'flex';
+                } else {
+                    noResultsElement.style.display = 'none';
+
+                    // Populate table
+                    filteredResults.forEach(result => {
+                        const row = document.createElement('tr');
+                        const formattedDate = Utils.formatDate(result.date);
+                        row.innerHTML = `
+                            <td>${result.name}</td>
+                            <td>${formattedDate}</td>
+                            <td>${result.score}</td>
+                            <td>${result.accuracy}%</td>
+                            <td>${result.totalWords}</td>
+                            <td>${result.wpm}</td>
+                            <td>${result.duration}s</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+            }
+
+            function populateUserFilter() {
+                const results = Utils.getTestResults();
+                const users = Utils.getUniqueUsers();
+                const filterUserSelect = document.getElementById('filter-user');
+                filterUserSelect.innerHTML = '<option value="all">All Users</option>';
+                users.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user;
+                    option.textContent = user;
+                    filterUserSelect.appendChild(option);
+                });
+            }
+
+            function updateStats() {
+                const results = Utils.getTestResults();
+                const totalTests = results.length;
+                const totalUsers = Utils.getUniqueUsers().length;
+                let totalWPM = 0, totalAccuracy = 0;
+                results.forEach(result => {
+                    totalWPM += result.wpm;
+                    totalAccuracy += result.accuracy;
+                });
+                const avgWPM = totalTests > 0 ? Math.round(totalWPM / totalTests) : 0;
+                const avgAccuracy = totalTests > 0 ? Math.round(totalAccuracy / totalTests) : 0;
+                document.getElementById('total-tests').textContent = totalTests;
+                document.getElementById('total-users').textContent = totalUsers;
+                document.getElementById('avg-wpm').textContent = avgWPM;
+                document.getElementById('avg-accuracy').textContent = `${avgAccuracy}%`;
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function () {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Check device type and adjust UI
+            Utils.checkDeviceType();
+            Utils.adjustTextDisplay();
+
+            // Handle window resize
+            window.addEventListener('resize', function () {
+                Utils.checkDeviceType();
+                Utils.adjustTextDisplay();
+            });
+
+            // Handle orientation change
+            window.addEventListener('orientationchange', function () {
+                setTimeout(() => {
+                    Utils.checkDeviceType();
+                    Utils.adjustTextDisplay();
+                }, 300);
+            });
+
+            // Home page form submission
+            document.getElementById('user-form').onsubmit = function (e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value.trim();
+                const testDuration = document.getElementById('test-mode').value;
+
+                if (username) {
+                    localStorage.setItem('currentUser', username);
+                    localStorage.setItem('testDuration', testDuration);
+                    showPage('typing');
+                }
+            };
+
+            // Check returning user
+            const lastUser = localStorage.getItem('currentUser');
+            if (lastUser) {
+                document.getElementById('username').value = lastUser;
+            }
+
+            // Prevent zoom on mobile
+            document.addEventListener('touchstart', function (event) {
+                if (event.touches.length > 1) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+
+            // Prevent context menu on mobile
+            document.addEventListener('contextmenu', function (e) {
+                if (AppState.isMobile) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
